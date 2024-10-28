@@ -7,6 +7,8 @@ const {
   getProfile,
   getTransactionListByUser,
 } = require("@yayawallet/node-sdk");
+
+const { verifyYayaSignature } = require("./utils/verifyYayaSignature");
 const app = express();
 
 app.get("/", (req, res) => res.send("Welcome to yaya"));
