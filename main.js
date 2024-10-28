@@ -15,6 +15,8 @@ app.get("/profile", async (req, res) => {
   try {
     const profile = await getProfile();
 
+    console.log("Viewing profile");
+
     return res.send(profile);
   } catch (error) {
     return res.status(500).send({ message: "Error" });
