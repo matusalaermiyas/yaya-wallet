@@ -36,7 +36,9 @@ app.post("/webhook", (req, res) => {
   const yayaSignature = req.headers["yaya-signature"]; // Retrieve YAYA-SIGNATURE header
 
   // Verify the signature
-  if (verifyYayaSignature(payload, yayaSignature, SECRET_KEY)) {
+  if (
+    verifyYayaSignature(payload, yayaSignature, process.env.YAYA_SECRET_KEY)
+  ) {
     console.log("Signature verified successfully!");
     // Process the event
     res.status(200).send("Event received and verified");
