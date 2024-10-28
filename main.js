@@ -6,9 +6,10 @@ const express = require("express");
 const {
   getProfile,
   getTransactionListByUser,
-  createTransaction,
 } = require("@yayawallet/node-sdk");
 const app = express();
+
+app.get("/", (req, res) => res.send("Welcome to yaya"));
 
 app.get("/profile", async (req, res) => {
   try {
@@ -30,19 +31,18 @@ app.get("/transactions", async (req, res) => {
   }
 });
 
-app.post("/transactions", async (req, res) => {
-  try {
-    const transactions = await createTransaction(
-      "11546a58-04c2-4b67-aba8-cc7ffacc8c6b",
-      10,
-      "sandbox"
-    );
+app.post("/webhook", (req, res) => {
+  const payload = JSON.stringify(req.body); // Convert JSON payload to string
+  const yayaSignature = req.headers["yaya-signature"]; // Retrieve YAYA-SIGNATURE header
 
-    return res.send(transactions);
-  } catch (error) {
-    console.log(error);
-
-    return res.status(500).send({ message: "Error" });
+  // Verify the signature
+  if (verifyYayaSignature(payload, yayaSignature, SECRET_KEY)) {
+    console.log("Signature verified successfully!");
+    // Process the event
+    res.status(200).send("Event received and verified");
+  } else {
+    console.error("Invalid signature. Request not verified.");
+    res.status(403).send("Forbidden: Signature verification failed");
   }
 });
 
