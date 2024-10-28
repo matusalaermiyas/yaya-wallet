@@ -9,8 +9,8 @@ const {
 } = require("@yayawallet/node-sdk");
 
 const {
-  verifyYayaSignature,
   createSignedString,
+  verifySignature,
 } = require("./utils/verifyYayaSignature");
 
 const app = express();
@@ -46,7 +46,7 @@ app.post("/webhook", (req, res) => {
     const yaYaSignature = req.headers["yaya-signature"];
     // const timestamp = req.headers['yaya-timestamp'];
 
-    if (!verifyYayaSignature(signedString, yaYaSignature)) {
+    if (!verifySignature(signedString, yaYaSignature)) {
       console.log("'Invalid signature'");
 
       return res.status(400).send("Invalid signature");
