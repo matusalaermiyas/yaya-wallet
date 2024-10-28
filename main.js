@@ -34,6 +34,8 @@ app.get("/transactions", async (req, res) => {
 });
 
 app.post("/webhook", (req, res) => {
+  console.log("Getting into hook");
+
   const payload = JSON.stringify(req.body); // Convert JSON payload to string
   const yayaSignature = req.headers["yaya-signature"]; // Retrieve YAYA-SIGNATURE header
 
